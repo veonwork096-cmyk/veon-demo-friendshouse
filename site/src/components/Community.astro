@@ -1,0 +1,62 @@
+---
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import VideoFacade from "./VideoFacade.astro";
+import Loc from "./Loc.astro";
+import winter from "../assets/winter.jpg";
+import { events, socials, FUTURE } from "../data/site";
+const A = winter.width / winter.height;
+const crop = { aspect: 16 / 9 };
+---
+<Section id="community" class="community section">
+  <div class="container grid community__grid">
+    <div class="community__text">
+      <h2>Рік у Міжріччі</h2>
+      <p class="lead">Свята, які збирають мешканців містечка, від Водохреща до Святого Миколая.</p>
+      <table class="events">
+        <caption class="visually-hidden">Події містечка</caption>
+        <tbody>
+          {events.map((e) => (
+            <tr>
+              <th scope="row" class="events__name">{e.name}</th>
+              <td class="events__years">{e.years ?? ""}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div class="community__links">
+        <ul class="socials" aria-label="Соцмережі Міжріччя">
+          {socials.map((s) => <li><a class="link" href={s.href} rel="noopener">{s.name}</a></li>)}
+        </ul>
+        <FutureLink note={FUTURE}>Усі фото і відео</FutureLink>
+      </div>
+    </div>
+    <div class="community__media">
+      <figure class="community__winter chart" data-draw>
+        <Picture src={winter} formats={["avif", "webp"]} widths={[640, 960, 1280, 1920]} sizes="(min-width: 64rem) 50vw, 100vw" alt="Аерофото Міжріччя взимку: засніжені вулиці, парк і замерзла водойма" loading="lazy" decoding="async" />
+        <Loc text="містечко взимку" x={0.20} y={0.38} imageAspect={A} desktop={crop} mobile={crop} side="right" />
+      </figure>
+      <VideoFacade id="AQ7NsP8mfbI" title="Відео про Міжріччя на YouTube" />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .community__grid { row-gap: var(--space-7); }
+  .community__text { grid-column: 1 / -1; display: grid; gap: var(--space-5); align-content: start; }
+  .community__media { grid-column: 1 / -1; display: grid; gap: var(--space-5); }
+  .community__winter { aspect-ratio: 16 / 9; }
+  .events { width: 100%; border-collapse: collapse; margin-top: var(--space-4); border-top: var(--hairline); }
+  .events tr { border-bottom: var(--hairline); }
+  .events__name { text-align: left; font: 500 var(--fs-lead)/1.3 var(--font-body); padding: var(--space-4) var(--space-4) var(--space-4) 0; }
+  .events__years { text-align: right; color: var(--muted); font-size: var(--fs-small); white-space: nowrap; font-variant-numeric: tabular-nums; padding-block: var(--space-4); vertical-align: baseline; }
+  .community__links { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4) var(--space-6); }
+  .socials { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+  .socials a { display: inline-flex; align-items: center; min-height: 44px; }
+
+  @media (min-width: 64rem) {
+    .community__text { grid-column: 1 / span 5; }
+    .community__media { grid-column: 7 / -1; padding-top: var(--space-2); }
+  }
+</style>

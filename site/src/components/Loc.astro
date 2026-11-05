@@ -1,0 +1,13 @@
+---
+// Лоція label: a point on the real photo, a leader line and an italic place name (Literata Italic).
+import { coverPoint, type Crop } from "../lib/crop";
+interface Props { x: number; y: number; imageAspect: number; desktop: Crop; mobile: Crop; wide?: Crop; side?: "left" | "right"; mobileHidden?: boolean; text: string; }
+const { x, y, imageAspect, desktop, mobile, wide, side = "right", mobileHidden = false, text } = Astro.props;
+const d = coverPoint(x, y, imageAspect, desktop);
+const m = coverPoint(x, y, imageAspect, mobile);
+const w = coverPoint(x, y, imageAspect, wide ?? desktop);
+const style = `--dx:${d.x.toFixed(2)}%;--dy:${d.y.toFixed(2)}%;--mx:${m.x.toFixed(2)}%;--my:${m.y.toFixed(2)}%;--wx:${w.x.toFixed(2)}%;--wy:${w.y.toFixed(2)}%`;
+---
+<span class:list={["loc", { "loc--mobile-hidden": mobileHidden }]} data-side={side} style={style}>
+  <span class="loc__dot"></span><span class="loc__line"></span><span class="loc__text">{text}</span>
+</span>

@@ -1,0 +1,50 @@
+---
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import Loc from "./Loc.astro";
+import Icon from "./Icon.astro";
+import plot from "../assets/plot.webp";
+import { contacts, FUTURE } from "../data/site";
+
+const A = plot.width / plot.height;
+const crop = { aspect: 4 / 3 };
+---
+<Section id="plots" class="plots section section--sand" rec="W-R103,G-R003">
+  <div class="container grid plots__grid">
+    <div class="plots__text">
+      <h2>Ділянки від 6 соток, деякі з виходом на озеро</h2>
+      <ul class="plots__facts">
+        <li><strong>від 6 соток</strong><span>площа ділянки</span></li>
+        <li><strong>вихід на озеро</strong><span>власний, у частини ділянок</span></li>
+        <li><strong>розстрочка без %</strong><span>умови у відділі продажу</span></li>
+      </ul>
+      <p class="plots__honest">Про вільні ділянки і ціни розкажуть у відділі продажу.</p>
+      <div class="plots__actions">
+        <a class="btn btn--primary" href={contacts.phoneMain.href}><Icon name="phone" />Дізнатися про ділянки</a>
+        <FutureLink note={FUTURE}>Карта ділянок</FutureLink>
+      </div>
+    </div>
+    <figure class="plots__photo chart" data-draw>
+      <Picture src={plot} formats={["avif", "webp"]} widths={[640, 1066]} sizes="(min-width: 64rem) 55vw, 100vw" alt="Аерофото ділянки в Міжріччі, виділеної жовтим, поруч вода і зелена зона" loading="lazy" decoding="async" />
+      <Loc text="ділянка" x={0.33} y={0.78} imageAspect={A} desktop={crop} mobile={crop} side="right" />
+    </figure>
+  </div>
+</Section>
+
+<style>
+  .plots__grid { row-gap: var(--space-6); align-items: center; }
+  .plots__text { grid-column: 1 / -1; display: grid; gap: var(--space-6); justify-items: start; }
+  .plots__facts { display: grid; gap: var(--space-4); width: 100%; }
+  .plots__facts li { display: grid; gap: var(--space-1); padding-top: var(--space-4); border-top: 1px solid var(--rule); }
+  .plots__facts strong { font: 700 var(--fs-h3)/1.1 var(--font-display); letter-spacing: -0.01em; }
+  .plots__facts span { color: var(--muted); font-size: var(--fs-small); }
+  .plots__honest { font-size: var(--fs-lead); max-width: 30ch; }
+  .plots__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-5); }
+  .plots__photo { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+
+  @media (min-width: 64rem) {
+    .plots__text { grid-column: 1 / span 5; }
+    .plots__photo { grid-column: 6 / -1; margin-right: calc(var(--gutter) * -1); border-radius: var(--radius) 0 0 var(--radius); }
+  }
+</style>

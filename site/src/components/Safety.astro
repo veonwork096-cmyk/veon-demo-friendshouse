@@ -1,0 +1,53 @@
+---
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { safety, safetyMore, FUTURE } from "../data/site";
+---
+<Section id="safety" class="safety on-night">
+  <div class="container grid safety__grid">
+    <div class="safety__head">
+      <h2>Вночі тут світло і тихо</h2>
+      <p class="safety__lead">Містечко закритого типу. За порядком, дорогами і світлом стежить управляюча компанія.</p>
+    </div>
+    <ul class="register">
+      {safety.map((s) => (
+        <li class="register__row">
+          <strong class="register__num">{s.num}</strong>
+          <span class="register__text">{s.text}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="safety__more">
+      <h3 class="safety__more-title">Ще на території</h3>
+      <ul class="safety__list">
+        {safetyMore.map((t) => <li>{t}</li>)}
+      </ul>
+      <FutureLink note={FUTURE}>Сервіс для мешканців</FutureLink>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .safety { background: var(--night); color: var(--night-text); padding-block: var(--section-gap); }
+  .safety__grid { row-gap: var(--space-7); }
+  .safety__head { grid-column: 1 / -1; display: grid; gap: var(--space-5); }
+  .safety__lead { font-size: var(--fs-lead); color: var(--night-muted); max-width: 36ch; }
+  .register { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--night-rule); }
+  .register__row { display: grid; gap: var(--space-2); padding-block: var(--space-5); border-bottom: 1px solid var(--night-rule); }
+  .register__num { font: 700 var(--fs-num)/1 var(--font-display); letter-spacing: -0.03em; color: var(--night-accent); font-variant-numeric: tabular-nums; }
+  .register__text { color: var(--night-text); }
+  .safety__more { grid-column: 1 / -1; display: grid; gap: var(--space-4); justify-items: start; }
+  .safety__more-title { font-size: var(--fs-body); font-weight: 500; color: var(--night-muted); }
+  .safety__list { display: grid; gap: var(--space-2); }
+  .safety__list li { padding-left: var(--space-5); position: relative; }
+  .safety__list li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: var(--space-3); height: 1px; background: var(--night-muted); }
+
+  @media (min-width: 48rem) {
+    .register { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-6); }
+  }
+  @media (min-width: 64rem) {
+    .safety__head { grid-column: 1 / span 5; align-self: start; }
+    .register { grid-column: 6 / -1; }
+    .safety__more { grid-column: 6 / -1; }
+  }
+</style>

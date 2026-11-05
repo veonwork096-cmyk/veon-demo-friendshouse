@@ -1,0 +1,103 @@
+---
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import Loc from "./Loc.astro";
+import Icon from "./Icon.astro";
+import hero from "../assets/hero-desna-park.jpg";
+import { contacts } from "../data/site";
+
+const A = hero.width / hero.height;
+const desktop = { aspect: 3.6, ox: 0.5, oy: 0.62 };
+const mobile = { aspect: 4 / 3, ox: 0.3, oy: 0.5 };
+const wide = { aspect: 3.4, ox: 0.5, oy: 0.6 };
+---
+<Section id="hero" class="hero" rec="W-R102">
+  <div class="hero__text container">
+    <h1 class="hero__title" data-rec="W-R201">
+      <span class="hero__line" style="--i:0">Котеджне містечко Міжріччя</span>
+      <span class="hero__line" style="--i:1">між Десною і Дніпром</span>
+    </h1>
+    <div class="hero__below" style="--i:2">
+      <p class="hero__where">Село Осещина, Вишгородський район, 23&nbsp;км до центру Києва.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href={contacts.phoneMain.href} data-rec="W-R102"><Icon name="phone" />Записатися на перегляд</a>
+        <a class="btn btn--secondary" href={contacts.telegram} rel="noopener"><Icon name="telegram" />Написати в Telegram</a>
+      </div>
+      <p class="hero__note">Офіс продажу на території містечка, {contacts.hours}</p>
+    </div>
+  </div>
+  <figure class="hero__photo chart" data-draw data-rec="W-R301,G-R002" style={`--d-aspect:${desktop.aspect};--m-aspect:${mobile.aspect};--w-aspect:${wide.aspect}`}>
+    <Picture
+      src={hero}
+      formats={["avif", "webp"]}
+      widths={[640, 960, 1280, 1920, 2560]}
+      sizes="100vw"
+      alt="Аерофото осені в Міжріччі: річка Десна, набережна, парк і футбольне поле"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <Loc text="Десна" x={0.22} y={0.42} imageAspect={A} desktop={desktop} mobile={mobile} wide={wide} />
+    <Loc text="парк 4 га" x={0.61} y={0.58} imageAspect={A} desktop={desktop} mobile={mobile} wide={wide} side="left" />
+    <Loc text="спортивні майданчики" x={0.40} y={0.76} imageAspect={A} desktop={desktop} mobile={mobile} wide={wide} mobileHidden />
+  </figure>
+</Section>
+
+<style>
+  .hero { padding-top: clamp(2rem, 1rem + 2vw, 2.5rem); }
+  .hero__title {
+    font-size: clamp(2.5rem, 5.9vw, 5.25rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    max-width: none;
+  }
+  .hero__line { display: block; }
+  .hero__below {
+    display: grid; gap: var(--space-5);
+    margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  }
+  .hero__where { font-size: var(--fs-lead); color: var(--muted); max-width: 38ch; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .hero__note { font-size: var(--fs-small); color: var(--muted); margin-top: calc(var(--space-2) * -1); }
+  .hero__photo {
+    margin-top: clamp(2rem, 1rem + 3vw, 4rem);
+    border-radius: 0;
+    aspect-ratio: var(--m-aspect);
+  }
+  .hero__photo :global(img) { object-position: 30% 50%; }
+
+  @media (min-width: 64rem) {
+    .hero__photo { aspect-ratio: var(--d-aspect); margin-top: var(--space-6); }
+    .hero__photo :global(img) { object-position: 50% 62%; }
+    .hero__below { margin-top: var(--space-5); row-gap: var(--space-3); }
+  }
+  @media (min-width: 100rem) {
+    .hero__photo { aspect-ratio: var(--w-aspect); max-width: 1800px; margin-inline: auto; }
+    .hero__photo :global(img) { object-position: 50% 60%; }
+  }
+  @media (min-width: 64rem) {
+    .hero__below {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: end; column-gap: var(--space-6);
+    }
+    .hero__where { grid-column: 1; }
+    .hero__actions { grid-column: 2; justify-content: flex-end; }
+    .hero__note { grid-column: 2; text-align: right; margin-top: 0; }
+  }
+  @media (max-width: 30rem) {
+    .hero__actions .btn { width: 100%; }
+  }
+
+  /* Settling of the first screen: lines rise 8px with opacity; image is never hidden (LCP) */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero__line, :global(.js) .hero__below {
+      animation: settle var(--dur) var(--ease-out) both;
+      animation-delay: calc(var(--i) * 60ms);
+    }
+  }
+  @keyframes settle {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+</style>

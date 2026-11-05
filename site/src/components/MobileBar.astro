@@ -1,0 +1,37 @@
+---
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<div class="mbar" data-rec="W-R101,G-R001,S-R003">
+  <a class="mbar__btn mbar__btn--call" href={contacts.phoneMain.href}><Icon name="phone" />Подзвонити</a>
+  <a class="mbar__btn" href={contacts.telegram} rel="noopener"><Icon name="telegram" />Telegram</a>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>(".mbar");
+  const hero = document.getElementById("hero");
+  if (bar && hero && "IntersectionObserver" in window) {
+    bar.classList.add("is-waiting");
+    new IntersectionObserver(([e]) => { bar.classList.toggle("is-shown", !e.isIntersecting); }).observe(hero);
+  }
+</script>
+
+<style>
+  .mbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);
+    padding: var(--space-2) var(--gutter) calc(var(--space-2) + env(safe-area-inset-bottom));
+    background: var(--paper); border-top: var(--hairline);
+    transition: transform var(--dur-label) var(--ease-out);
+  }
+  .mbar.is-waiting:not(.is-shown) { transform: translateY(110%); }
+  .mbar__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+    min-height: var(--tap); border-radius: var(--radius); border: 1.5px solid var(--ink);
+    color: var(--ink); text-decoration: none; font-weight: 500;
+  }
+  .mbar__btn :global(svg) { width: 20px; height: 20px; }
+  .mbar__btn--call { background: var(--desna); border-color: var(--desna); color: var(--on-accent); }
+  .mbar__btn:focus-visible { outline: 3px solid var(--desna); outline-offset: 3px; }
+  @media (min-width: 48rem) { .mbar { display: none; } }
+</style>

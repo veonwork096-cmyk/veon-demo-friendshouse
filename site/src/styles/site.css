@@ -1,0 +1,122 @@
+/* Міжріччя: shared page styles (typography, buttons, layout helpers, лоція labels, FutureLink). Values only from tokens.css. */
+html { font-synthesis: none; overflow-x: clip; scrollbar-color: var(--muted) var(--paper); }
+body { overflow-x: clip; }
+body {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; margin: 0; color: inherit; }
+h2 { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -0.02em; max-width: 18ch; }
+h3 { font-size: var(--fs-h3); line-height: 1.15; letter-spacing: -0.01em; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.lead { font-size: var(--fs-lead); line-height: 1.5; color: var(--muted); max-width: 40ch; }
+.container { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; }
+.section { padding-block: var(--section-gap); }
+.section--sand { background: var(--sand); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--space-5); }
+::selection { background: var(--desna); color: var(--on-accent); }
+
+/* Buttons: rectangle, radius 6px, ≥48px */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--tap); padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius); border: 1.5px solid transparent;
+  font: 500 var(--fs-body)/1.2 var(--font-body);
+  text-decoration: none; text-align: center; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.btn svg { width: 1.125rem; height: 1.125rem; flex: none; }
+.btn--primary { background: var(--desna); color: var(--on-accent); }
+.btn--primary:hover { background: var(--desna-deep); transform: translateY(-1px); }
+.btn--secondary { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn--secondary:hover { background: var(--ink); color: var(--paper); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:focus-visible { outline: 3px solid var(--desna); outline-offset: 3px; }
+.on-night .btn--secondary { color: var(--night-text); border-color: var(--night-text); }
+.on-night .btn--secondary:hover { background: var(--night-text); color: var(--night); }
+.on-night :focus-visible { outline-color: var(--night-accent); }
+
+.link {
+  color: var(--desna); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+}
+.link:hover { color: var(--desna-deep); text-decoration-thickness: 2px; }
+
+/* FutureLink: a quiet, finished-looking inactive item with a note on hover/focus */
+.future-link {
+  color: var(--muted); font-size: var(--fs-body); min-height: 44px; gap: var(--space-2);
+  text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: 0.25em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.future-link:hover, .future-link:focus-visible { color: var(--ink); }
+.future-link__note[aria-hidden="true"] {
+  left: 0; transform: translateY(-4px); text-decoration: none;
+  font-family: var(--font-body); background: var(--ink); color: var(--paper);
+}
+.future-link:hover .future-link__note, .future-link:focus-visible .future-link__note { transform: translateY(0); }
+.on-night .future-link { color: var(--night-muted); }
+.on-night .future-link:hover, .on-night .future-link:focus-visible { color: var(--night-text); }
+.on-night .future-link__note[aria-hidden="true"] { background: var(--night-text); color: var(--night); }
+
+button:disabled, [aria-disabled="true"] { cursor: default; }
+button:disabled { opacity: 0.6; }
+
+/* Figures with лоція labels */
+.chart { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--sand); }
+.chart picture, .chart img { width: 100%; height: 100%; }
+.chart img { object-fit: cover; }
+.photo-caption { margin-top: var(--space-3); font-size: var(--fs-caption); color: var(--muted); }
+
+.loc {
+  position: absolute; left: var(--mx); top: var(--my);
+  display: flex; align-items: center; pointer-events: none;
+  transform: translateY(-50%);
+}
+.loc[data-side="left"] { flex-direction: row-reverse; transform: translate(-100%, -50%); }
+.loc__dot {
+  width: var(--space-4); height: var(--space-4); flex: none; border-radius: 50%;
+  background: var(--paper); border: 4px solid var(--ink);
+  position: relative; z-index: 1;
+}
+.loc[data-side="right"] { margin-left: calc(var(--space-2) * -1); }
+.loc[data-side="left"] { margin-left: var(--space-2); }
+.loc__line { width: clamp(24px, 4vw, 56px); height: 2px; background: var(--paper); flex: none; transform-origin: left center; }
+.loc[data-side="left"] .loc__line { transform-origin: right center; }
+.loc__text {
+  font-family: var(--font-label); font-style: italic; font-weight: 400;
+  font-size: clamp(0.9375rem, 0.85rem + 0.4vw, 1.25rem); line-height: 1.2;
+  color: var(--ink); background: var(--label-bg);
+  padding: 0.45em 0.7em; border-radius: 4px; white-space: nowrap;
+}
+.loc--mobile-hidden { display: none; }
+@media (min-width: 48rem) {
+  .loc--mobile-hidden { display: flex; }
+}
+@media (min-width: 64rem) {
+  .loc { left: var(--dx); top: var(--dy); }
+}
+@media (min-width: 100rem) {
+  .loc { left: var(--wx); top: var(--wy); }
+}
+/* Label motion: line grows from the point, then the text appears (only with JS and motion allowed) */
+@media (prefers-reduced-motion: no-preference) {
+  .will-draw .loc .loc__line { transition: transform var(--dur-label) var(--ease-out); }
+  .will-draw .loc .loc__text { transition: opacity var(--dur-label) var(--ease-out) calc(var(--dur-label) * 0.6); }
+  .js .will-draw:not(.is-drawn) .loc .loc__line { transform: scaleX(0); }
+  .js .will-draw:not(.is-drawn) .loc .loc__text { opacity: 0; }
+  /* Scheme in #location: rivers open left to right, then the Міжріччя point appears */
+  .will-draw .scheme__rivers { transition: clip-path var(--dur-river) var(--ease-inout); }
+  .will-draw .scheme__home { transform-box: fill-box; transition: opacity var(--dur-label) var(--ease-out) var(--dur-river), transform var(--dur-label) var(--ease-out) var(--dur-river); }
+  .js .will-draw:not(.is-drawn) .scheme__rivers { clip-path: inset(0 100% 0 0); }
+  .js .will-draw:not(.is-drawn) .scheme__home { opacity: 0; transform: translateY(8px); }
+}
+
+@media (max-width: 22.5rem) {
+  .btn { padding-inline: var(--space-4); font-size: var(--fs-small); }
+}
+@media (max-width: 47.99rem) {
+  body { padding-bottom: calc(var(--tap) + var(--space-5)); }
+}

@@ -1,0 +1,116 @@
+{
+  "start_url": "http://localhost:4321/",
+  "captured_at": "2026-11-05T11:30:55.852Z",
+  "browser": "157.0.8103.39",
+  "site": {
+    "/robots.txt": {
+      "status": 404,
+      "location": null
+    },
+    "/sitemap.xml": {
+      "status": 404,
+      "location": null
+    },
+    "security_headers": {
+      "strict-transport-security": null,
+      "content-security-policy": null,
+      "x-content-type-options": null,
+      "referrer-policy": null,
+      "x-frame-options": null,
+      "permissions-policy": null
+    },
+    "server": null
+  },
+  "pages": [
+    {
+      "url": "http://localhost:4321/",
+      "slug": "home",
+      "desktop": {
+        "status": 200,
+        "final_url": "http://localhost:4321/",
+        "load_ms_approx": 3636,
+        "console_errors": [
+          "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ],
+        "title": "Міжріччя — котеджне містечко біля Києва між Десною і Дніпром",
+        "description": "Будинки і ділянки в КМ Міжріччя, с. Осещина: парк 4 га на Десні, 8 озер, школа, закрита територія. Запис на перегляд щодня 08:00–20:00.",
+        "robots_meta": "noindex",
+        "lang": "uk",
+        "canonical": null,
+        "viewport_meta": "width=device-width, initial-scale=1",
+        "h1": [
+          "Котеджне містечко Міжріччя між Десною і Дніпром"
+        ],
+        "headings_count": {
+          "h2": 10,
+          "h3": 9
+        },
+        "og": {
+          "title": true,
+          "image": false
+        },
+        "jsonld_types": [
+          "RealEstateAgent"
+        ],
+        "images": 17,
+        "images_without_alt": 0,
+        "forms": 0,
+        "tel_links": 18,
+        "mailto_links": 0,
+        "messenger_links": 7,
+        "words": 749,
+        "horizontal_overflow_px": 0,
+        "trackers": [],
+        "screens": {
+          "fold": "screens\\home-desktop-fold.png",
+          "full": "screens\\home-desktop-full.png",
+          "sections": [],
+          "page_height_px": 11236,
+          "full_cropped": true
+        }
+      },
+      "mobile": {
+        "status": 200,
+        "final_url": "http://localhost:4321/",
+        "load_ms_approx": 2408,
+        "console_errors": [],
+        "title": "Міжріччя — котеджне містечко біля Києва між Десною і Дніпром",
+        "description": "Будинки і ділянки в КМ Міжріччя, с. Осещина: парк 4 га на Десні, 8 озер, школа, закрита територія. Запис на перегляд щодня 08:00–20:00.",
+        "robots_meta": "noindex",
+        "lang": "uk",
+        "canonical": null,
+        "viewport_meta": "width=device-width, initial-scale=1",
+        "h1": [
+          "Котеджне містечко Міжріччя між Десною і Дніпром"
+        ],
+        "headings_count": {
+          "h2": 10,
+          "h3": 9
+        },
+        "og": {
+          "title": true,
+          "image": false
+        },
+        "jsonld_types": [
+          "RealEstateAgent"
+        ],
+        "images": 17,
+        "images_without_alt": 0,
+        "forms": 0,
+        "tel_links": 18,
+        "mailto_links": 0,
+        "messenger_links": 7,
+        "words": 735,
+        "horizontal_overflow_px": 0,
+        "screens": {
+          "fold": "screens\\home-mobile-fold.png",
+          "full": "screens\\home-mobile-full.png",
+          "sections": [],
+          "page_height_px": 11557,
+          "full_cropped": true
+        }
+      }
+    }
+  ],
+  "errors": []
+}

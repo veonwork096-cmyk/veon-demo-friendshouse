@@ -1,0 +1,118 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
+import Icon from "./Icon.astro";
+import { nav, contacts } from "../data/site";
+---
+<header class="site-header" data-rec="W-R101,G-R001,M-R002">
+  <div class="site-header__bar container">
+    <a class="site-header__logo" href="#top" aria-label="Міжріччя Friends Town, на початок сторінки">
+      <Image src={logo} alt="" width={168} height={33} densities={[1, 2]} format="webp" loading="eager" />
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Розділи сторінки">
+      <ul class="site-nav__list">
+        {nav.map((item) => <li><a class="site-nav__link" href={`#${item.id}`}>{item.label}</a></li>)}
+      </ul>
+      <div class="site-nav__contacts">
+        <a class="site-nav__phone" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a>
+        <p class="site-nav__hours">Офіс продажу {contacts.hours}</p>
+        <a class="btn btn--secondary" href={contacts.telegram} rel="noopener">Написати в Telegram</a>
+      </div>
+    </nav>
+    <div class="site-header__actions">
+      <a class="site-header__phone" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a>
+      <a class="btn btn--primary site-header__cta" href="#visit">Записатися на перегляд</a>
+      <a class="icon-btn site-header__call" href={contacts.phoneMain.href} aria-label={`Подзвонити ${contacts.phoneMain.label}`}><Icon name="phone" /></a>
+      <button class="icon-btn site-header__menu" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+        <Icon name="menu" class="i-open" /><Icon name="close" class="i-close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>(".site-header__menu");
+  const navEl = document.getElementById("site-nav");
+  if (btn && navEl) {
+    navEl.classList.add("is-collapsible");
+    const set = (open: boolean) => {
+      btn.setAttribute("aria-expanded", String(open));
+      btn.setAttribute("aria-label", open ? "Закрити меню" : "Меню");
+      navEl.classList.toggle("is-open", open);
+    };
+    btn.addEventListener("click", () => set(btn.getAttribute("aria-expanded") !== "true"));
+    navEl.addEventListener("click", (e) => { if ((e.target as HTMLElement).closest("a")) set(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && btn.getAttribute("aria-expanded") === "true") { set(false); btn.focus(); } });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--paper);
+    border-bottom: var(--hairline);
+  }
+  .site-header__bar { display: flex; align-items: center; gap: var(--space-5); min-height: var(--header-h); }
+  .site-header__logo { display: inline-flex; min-height: 44px; align-items: center; flex: none; border-radius: 2px; }
+  .site-header__logo img { width: 136px; height: auto; }
+  .site-nav { margin-left: auto; }
+  .site-nav__list { display: flex; gap: var(--space-1); }
+  .site-nav__link {
+    display: inline-flex; align-items: center; min-height: 44px; padding-inline: var(--space-3);
+    font-size: var(--fs-small); color: var(--ink); text-decoration: none; border-radius: 4px;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .site-nav__link:hover { color: var(--desna); text-decoration: underline; text-underline-offset: 0.3em; }
+  .site-nav__contacts { display: none; }
+  .site-header__actions { display: flex; align-items: center; gap: var(--space-4); flex: none; }
+  .site-header__phone {
+    font-weight: 500; font-size: var(--fs-small); color: var(--ink); text-decoration: none; white-space: nowrap;
+    min-height: 44px; display: inline-flex; align-items: center;
+  }
+  .site-header__phone:hover { color: var(--desna); }
+  .site-header__cta { min-height: 44px; padding-block: 0.5rem; font-size: var(--fs-small); }
+  .icon-btn {
+    display: none; width: var(--tap); height: var(--tap); align-items: center; justify-content: center;
+    border-radius: var(--radius); border: 1.5px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .icon-btn:hover { background: var(--ink); color: var(--paper); }
+  .icon-btn svg { width: 22px; height: 22px; }
+  .site-header__call { background: var(--desna); border-color: var(--desna); color: var(--on-accent); }
+  .site-header__call:hover { background: var(--desna-deep); color: var(--on-accent); }
+  .site-header__menu :global(.i-close) { display: none; }
+  .site-header__menu[aria-expanded="true"] :global(.i-open) { display: none; }
+  .site-header__menu[aria-expanded="true"] :global(.i-close) { display: block; }
+
+  @media (min-width: 64rem) and (max-width: 79.99rem) {
+    .site-nav__link { padding-inline: var(--space-2); }
+    .site-header__phone { display: none; }
+  }
+  /* Below 1024: logo, call, menu */
+  @media (max-width: 63.99rem) {
+    .site-header__bar { gap: var(--space-3); }
+    .site-header__logo img { width: 124px; }
+    .site-header__phone, .site-header__cta { display: none; }
+    .icon-btn { display: inline-flex; }
+    .site-header__actions { margin-left: auto; gap: var(--space-2); }
+    .site-nav {
+      margin: 0; position: absolute; left: 0; right: 0; top: 100%;
+      background: var(--paper); border-bottom: var(--hairline);
+      padding: var(--space-3) var(--gutter) var(--space-6);
+    }
+    .site-nav__list { flex-direction: column; gap: 0; }
+    .site-nav__link { font-size: var(--fs-lead); padding-inline: 0; min-height: var(--tap); width: 100%; border-bottom: var(--hairline); }
+    .site-nav__contacts { display: grid; gap: var(--space-3); margin-top: var(--space-5); justify-items: start; }
+    .site-nav__phone { white-space: nowrap; font-size: var(--fs-h3); font-weight: 700; color: var(--ink); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+    .site-nav__hours { color: var(--muted); font-size: var(--fs-small); }
+    /* With JS the panel is a toggle; without JS it stays open under the bar */
+    .site-nav.is-collapsible { visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast); }
+    .site-nav.is-collapsible.is-open { visibility: visible; opacity: 1; transform: none; transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s; }
+    :global(html:not(.js)) .site-nav { position: static; padding-inline: 0; border: 0; }
+    :global(html:not(.js)) .site-header__menu { display: none; }
+    :global(html:not(.js)) .site-header__bar { flex-wrap: wrap; }
+  }
+  @media (max-width: 22rem) {
+    .site-header__logo img { width: 112px; }
+  }
+</style>

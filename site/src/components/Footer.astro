@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import FutureLink from "./FutureLink.astro";
+import logo from "../assets/logo.png";
+import { contacts, socials, FUTURE } from "../data/site";
+const future = ["Усі будинки", "Ділянки", "Інфраструктура", "Сервіс для мешканців", "Оренда", "Про девелопера", "Політика конфіденційності"];
+---
+<footer class="footer" data-rec="W-R101,S-R009">
+  <svg class="footer__rivers" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path d="M0 26 C180 30 300 14 470 18 C640 22 700 34 860 30 C1040 26 1180 10 1440 14" />
+    <path d="M0 34 C220 36 380 26 560 28 C740 30 820 22 980 22 C1150 22 1300 30 1440 28" />
+  </svg>
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="footer__logo" href="#top" aria-label="Міжріччя Friends Town, на початок сторінки">
+        <Image src={logo} alt="" width={168} height={33} densities={[1, 2]} format="webp" />
+      </a>
+      <p class="footer__about">Котеджне містечко в селі Осещина, між Десною і Дніпром. Продаж будинків і ділянок, сервіс для мешканців.</p>
+    </div>
+    <div class="footer__col">
+      <h2 class="footer__title">Контакти</h2>
+      <ul class="footer__list">
+        <li><a class="footer__link footer__phone" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a></li>
+        <li><a class="footer__link footer__phone" href={contacts.phoneSecond.href}>{contacts.phoneSecond.label}</a></li>
+        <li><a class="footer__link" href={contacts.telegram} rel="noopener">Telegram</a></li>
+        <li><a class="footer__link" href={contacts.whatsapp} rel="noopener">WhatsApp</a></li>
+        <li class="footer__plain">{contacts.address}</li>
+        <li class="footer__plain">Офіс продажу {contacts.hours}</li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h2 class="footer__title">Соцмережі</h2>
+      <ul class="footer__list">
+        {socials.map((s) => <li><a class="footer__link" href={s.href} rel="noopener">{s.name}</a></li>)}
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h2 class="footer__title">Розділи</h2>
+      <ul class="footer__list">
+        {future.map((f) => <li><FutureLink note={FUTURE}>{f}</FutureLink></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__base">
+    <p>Міжріччя Friends Town</p>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--sand); color: var(--ink); padding-bottom: var(--space-6); }
+  .footer__rivers { display: block; width: 100%; height: 40px; }
+  .footer__rivers path { fill: none; stroke: var(--brand); stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .footer__rivers path + path { stroke: var(--desna); stroke-width: 1.25; }
+  .footer__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); padding-top: var(--space-7); }
+  .footer__brand { display: grid; gap: var(--space-4); align-content: start; }
+  .footer__logo { display: inline-flex; width: fit-content; min-height: 44px; align-items: center; }
+  .footer__logo img { width: 150px; height: auto; }
+  .footer__about { color: var(--muted); max-width: 34ch; }
+  .footer__title { font: 500 var(--fs-body)/1.3 var(--font-body); color: var(--muted); max-width: none; }
+  .footer__list { display: grid; gap: var(--space-1); margin-top: var(--space-3); justify-items: start; }
+  .footer__link { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: none; }
+  .footer__link:hover { color: var(--desna); text-decoration: underline; text-underline-offset: 0.2em; }
+  .footer__phone { font-weight: 700; white-space: nowrap; }
+  .footer__plain { color: var(--muted); padding-block: var(--space-2); }
+  .footer__base { margin-top: var(--space-7); padding-top: var(--space-4); border-top: 1px solid var(--rule); color: var(--muted); font-size: var(--fs-small); }
+
+  @media (min-width: 48rem) {
+    .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .footer__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 2fr) minmax(0, 3fr); }
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import Loc from "./Loc.astro";
+import lake from "../assets/lake-field.jpg";
+import workout from "../assets/workout.jpg";
+import { infrastructure, FUTURE } from "../data/site";
+
+const A = lake.width / lake.height;
+const crop = { aspect: 16 / 10, ox: 0.5, oy: 0.6 };
+---
+<Section id="infrastructure" class="infra section" rec="W-R108">
+  <div class="container grid infra__grid">
+    <h2 class="infra__title">Берег, школа і маркет без поїздки в місто</h2>
+    <figure class="infra__big chart" data-draw>
+      <Picture src={lake} formats={["avif", "webp"]} widths={[640, 960, 1280, 1920]} sizes="(min-width: 64rem) 58vw, 100vw" alt="Аерофото парку Міжріччя: футбольне поле, доріжки, дерева і вода" loading="lazy" decoding="async" />
+      <Loc text="футбольне поле" x={0.47} y={0.70} imageAspect={A} desktop={crop} mobile={crop} side="right" />
+      <Loc text="парк" x={0.86} y={0.45} imageAspect={A} desktop={crop} mobile={crop} side="left" />
+    </figure>
+    <figure class="infra__small chart">
+      <Picture src={workout} formats={["avif", "webp"]} widths={[480, 800, 1200]} sizes="(min-width: 64rem) 30vw, 100vw" alt="Червоний воркаут-майданчик у парку Міжріччя" loading="lazy" decoding="async" />
+    </figure>
+    <ul class="facts">
+      {infrastructure.map((f) => (
+        <li class="fact">
+          {f.num && <strong class="fact__num">{f.num}</strong>}
+          <span class:list={["fact__text", { "fact__text--solo": !f.num }]}>{f.text}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="infra__more"><FutureLink note={FUTURE}>Уся інфраструктура</FutureLink></div>
+  </div>
+</Section>
+
+<style>
+  .infra__grid { row-gap: var(--space-6); }
+  .infra__title { grid-column: 1 / -1; max-width: 16ch; }
+  .infra__big { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+  .infra__small { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+  .infra__small :global(img) { object-position: 50% 40%; }
+  .facts { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); border-top: var(--hairline); }
+  .fact { display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); gap: var(--space-4); align-items: baseline; padding-block: var(--space-4); border-bottom: var(--hairline); }
+  .fact__num { font: 700 var(--fs-h3)/1.1 var(--font-display); letter-spacing: -0.01em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .fact__text { color: var(--muted); }
+  .fact__text--solo { grid-column: 1 / -1; color: var(--ink); font-weight: 500; }
+  .infra__more { grid-column: 1 / -1; }
+
+  @media (min-width: 48rem) {
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-6); }
+    .infra__small { grid-column: 1 / span 6; }
+  }
+  @media (min-width: 64rem) {
+    .infra__title { grid-column: 1 / span 6; }
+    .infra__big { grid-column: 1 / span 8; grid-row: 2 / span 2; }
+    .infra__small { grid-column: 9 / -1; grid-row: 2 / span 2; align-self: end; aspect-ratio: 3 / 4; }
+    .facts { grid-column: 1 / -1; margin-top: var(--space-6); }
+  }
+</style>

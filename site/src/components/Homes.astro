@@ -1,0 +1,141 @@
+---
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import streets from "../assets/streets.jpg";
+import { lots, groups, contacts, FUTURE } from "../data/site";
+---
+<Section id="homes" class="homes section">
+  <div class="container grid homes__head">
+    <div class="homes__intro">
+      <h2>Будинки біля води, парку і в містечку</h2>
+      <p class="lead">Готові будинки від 105 до 290&nbsp;м². Ціни як у каталозі відділу продажу; про наявність і перегляд питайте за телефоном.</p>
+    </div>
+    <figure class="homes__aerial chart">
+      <Picture src={streets} formats={["avif", "webp"]} widths={[640, 960, 1280, 1920]} sizes="(min-width: 64rem) 55vw, 100vw" alt="Аерофото вулиць Міжріччя: будинки з черепичними дахами і сонячними панелями" loading="lazy" decoding="async" />
+    </figure>
+  </div>
+
+  <div class="container">
+    <div class="homes__filter" role="group" aria-label="Показати будинки">
+      {groups.map((g, i) => (
+        <button type="button" class="chip" data-filter={g.id} aria-pressed={i === 0 ? "true" : "false"}>{g.label}</button>
+      ))}
+    </div>
+
+    <ul class="lots">
+      {lots.map((lot, i) => (
+        <li class="lot" data-group={lot.group} >
+          <article class="lot__body">
+            <div class="lot__photo">
+              <Picture src={lot.image} formats={["avif", "webp"]} widths={[480, 800, 1200]} sizes="(min-width: 64rem) 58vw, (min-width: 48rem) 45vw, 82vw" alt={lot.alt} loading="lazy" decoding="async" />
+            </div>
+            <div class="lot__data">
+              <h3 class="lot__title">{lot.title}</h3>
+              <p class="lot__where">{lot.where}</p>
+              <p class="lot__feature">{lot.feature}</p>
+              <div class="lot__deal">
+                <p class="lot__price">{lot.price}</p>
+                <a class="btn btn--primary lot__call" href={contacts.phoneMain.href}><Icon name="phone" />Запитати про будинок</a>
+              </div>
+              <FutureLink note={FUTURE} class="lot__more">Детальніше</FutureLink>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+    <div class="homes__all"><FutureLink note={FUTURE}>Усі будинки</FutureLink><FutureLink note={FUTURE}>Оренда будинків</FutureLink></div>
+  </div>
+</Section>
+
+<script>
+  const root = document.getElementById("homes");
+  const list = root?.querySelector<HTMLElement>(".lots");
+  const chips = root ? [...root.querySelectorAll<HTMLButtonElement>(".chip")] : [];
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const apply = (id: string) => {
+    list?.querySelectorAll<HTMLElement>(".lot").forEach((li) => { li.hidden = id !== "all" && li.dataset.group !== id; });
+    list?.scrollTo({ left: 0 });
+  };
+  chips.forEach((chip) => chip.addEventListener("click", () => {
+    if (chip.getAttribute("aria-pressed") === "true" || !list) return;
+    chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+    const id = chip.dataset.filter ?? "all";
+    if (reduce.matches) { apply(id); return; }
+    list.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 110, easing: "ease-in", fill: "forwards" }).finished.then(() => {
+      apply(id);
+      list.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 110, easing: "ease-out", fill: "forwards" });
+    });
+  }));
+</script>
+
+<style>
+  .homes__head { row-gap: var(--space-6); align-items: end; }
+  .homes__intro { grid-column: 1 / -1; display: grid; gap: var(--space-5); }
+  .homes__aerial { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+
+  .homes__filter { display: none; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-7); }
+  :global(.js) .homes__filter { display: flex; }
+  .chip {
+    min-height: 44px; padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius); border: 1.5px solid var(--rule); background: transparent;
+    font: 400 var(--fs-small)/1.2 var(--font-body); color: var(--ink); cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .chip:hover { border-color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+  /* Mobile: swipe rail */
+  .lots {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 86%; gap: var(--space-4);
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin-top: var(--space-5); padding-bottom: var(--space-4);
+    scrollbar-width: thin;
+  }
+  .lot { scroll-snap-align: start; min-width: 0; }
+  .lot[hidden] { display: none; }
+  .lot__body { display: grid; gap: var(--space-4); align-content: start; }
+  .lot__photo { aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--sand); }
+  .lot__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .lot__data { display: grid; gap: var(--space-2); justify-items: start; }
+  .lot__title { font-size: clamp(1.1875rem, 1.1rem + 0.3vw, 1.375rem); line-height: 1.2; }
+  .lot__where { color: var(--muted); font-size: var(--fs-small); }
+  .lot__feature { font-size: var(--fs-small); }
+  .lot__deal { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); margin-top: var(--space-2); }
+  .lot__price { font: 700 var(--fs-h3)/1 var(--font-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .lot__call { font-size: var(--fs-small); min-height: 44px; padding-block: var(--space-2); }
+  .homes__all { margin-top: var(--space-6); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
+
+
+  @media (min-width: 64rem) {
+    .homes__intro { grid-column: 1 / span 5; align-self: center; }
+    .homes__aerial { grid-column: 7 / -1; margin-right: calc(var(--gutter) * -1); border-radius: var(--radius) 0 0 var(--radius); }
+  }
+  @media (min-width: 48rem) {
+    .lots {
+      grid-auto-flow: row; grid-auto-columns: auto; overflow: visible;
+      grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--space-5); row-gap: var(--space-7);
+      align-items: start; padding-bottom: 0; margin-top: var(--space-6);
+    }
+    .lot { grid-column: span 6; }
+    /* First visible lot of the group: large photo + data side by side */
+    .lot:nth-child(1 of :not([hidden])) { grid-column: 1 / -1; }
+    .lot:nth-child(1 of :not([hidden])) .lot__body { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--space-6); align-items: center; }
+    .lot:nth-child(1 of :not([hidden])) .lot__photo { aspect-ratio: 4 / 3; }
+    .lot:nth-child(1 of :not([hidden])) .lot__title { font-size: var(--fs-h3); }
+  }
+  /* Rows after the main lot: wide + narrow, then narrow + wide (8/4, 4/8), not a shop grid of equal cards */
+  @media (min-width: 64rem) {
+    .lot { grid-column: span 4; }
+    .lot:nth-child(2 of :not([hidden])), .lot:nth-child(5 of :not([hidden])), .lot:nth-child(6 of :not([hidden])) { grid-column: span 8; }
+    .lot__photo { aspect-ratio: 1 / 1; }
+    .lot:nth-child(2 of :not([hidden])) .lot__photo, .lot:nth-child(5 of :not([hidden])) .lot__photo, .lot:nth-child(6 of :not([hidden])) .lot__photo { aspect-ratio: 2 / 1; }
+    /* Calls in the rows are a quiet tel: link next to the price; the main lot keeps the button */
+    .lot:not(:nth-child(1 of :not([hidden]))) .lot__call {
+      background: transparent; color: var(--desna); border: 0; padding-inline: 0; min-height: 44px;
+      text-decoration: underline; text-underline-offset: 0.25em;
+    }
+    .lot:not(:nth-child(1 of :not([hidden]))) .lot__call:hover { color: var(--desna-deep); transform: none; }
+  }
+</style>

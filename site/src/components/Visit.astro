@@ -1,0 +1,59 @@
+---
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import Icon from "./Icon.astro";
+import Loc from "./Loc.astro";
+import office from "../assets/office.jpg";
+import { contacts } from "../data/site";
+const A = office.width / office.height;
+const crop = { aspect: 4 / 3 };
+---
+<Section id="visit" class="visit section section--top-rule" rec="W-R102">
+  <div class="container grid visit__grid">
+    <figure class="visit__photo chart" data-draw>
+      <Picture src={office} formats={["avif", "webp"]} widths={[640, 960, 1200]} sizes="(min-width: 64rem) 55vw, 100vw" alt="Офіс продажу Міжріччя: цегляний павільйон з великими вікнами біля дороги" loading="lazy" decoding="async" />
+      <Loc text="офіс продажу" x={0.47} y={0.40} imageAspect={A} desktop={crop} mobile={crop} side="right" />
+    </figure>
+    <div class="visit__text">
+      <h2>Приїжджайте в офіс продажу</h2>
+      <dl class="visit__facts">
+        <div><dt>Адреса</dt><dd>{contacts.address}, офіс продажу на території містечка</dd></div>
+        <div><dt>Години</dt><dd>{contacts.hours[0].toUpperCase() + contacts.hours.slice(1)}</dd></div>
+        <div><dt>Телефони</dt><dd class="visit__phones">
+          <a class="visit__phone" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a>
+          <a class="visit__phone" href={contacts.phoneSecond.href}>{contacts.phoneSecond.label}</a>
+        </dd></div>
+      </dl>
+      <div class="visit__actions">
+        <a class="btn btn--primary" href={contacts.phoneMain.href}><Icon name="phone" />Подзвонити</a>
+        <a class="btn btn--secondary" href={contacts.telegram} rel="noopener"><Icon name="telegram" />Telegram</a>
+        <a class="btn btn--secondary" href={contacts.whatsapp} rel="noopener"><Icon name="chat" />WhatsApp</a>
+        <a class="btn btn--secondary" href={contacts.maps} rel="noopener"><Icon name="route" />Маршрут</a>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .visit { border-top: var(--hairline); }
+  .visit__grid { row-gap: var(--space-6); align-items: center; }
+  .visit__photo { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+  .visit__text { grid-column: 1 / -1; display: grid; gap: var(--space-6); }
+  .visit__facts { margin: 0; display: grid; gap: var(--space-4); }
+  .visit__facts > div { display: grid; grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr); gap: var(--space-4); padding-bottom: var(--space-4); border-bottom: var(--hairline); }
+  .visit__facts dt { color: var(--muted); font-size: var(--fs-small); padding-top: 0.15em; }
+  .visit__facts dd { margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+  .visit__phones { display: grid; justify-items: start; }
+  .visit__phone { color: var(--ink); text-decoration: none; font-weight: 700; white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; }
+  .visit__phone:hover { color: var(--desna); text-decoration: underline; text-underline-offset: 0.2em; }
+  .visit__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .visit__actions .btn--primary { grid-column: 1 / -1; }
+
+  @media (min-width: 64rem) {
+    .visit__photo { grid-column: 1 / span 7; margin-left: calc(var(--gutter) * -1); border-radius: 0 var(--radius) var(--radius) 0; }
+    .visit__text { grid-column: 8 / -1; padding-left: var(--space-5); }
+  }
+  @media (max-width: 22rem) {
+    .visit__actions { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

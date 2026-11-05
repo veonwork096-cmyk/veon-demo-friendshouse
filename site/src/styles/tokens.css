@@ -1,0 +1,102 @@
+/* Hallmark · shape: H1 над панорамним аерофото, далі асиметричні розділи 12 кол. · genre: modern-minimal · theme: custom · job: visit+buy · idea: "Лоція Міжріччя: місце між двома ріками, підписане на справжніх аерофото й схемі" · vibe: "річкова карта, повітря, точні підписи, спокій"
+ * paper: #F1F3EE · accent: #145CB0 · display: Geologica · body: Geologica · outlier: Literata Italic (підписи лоції) · hero: H1 над панорамним аерофото з підписами · nav: стандартна шапка з телефоном (сценарій дзвінка) · footer: світлий, відкриті контакти · imagery: client photos · signature: аерофото з підписами лоції і схема двох рек
+ * axes: light/grotesk-sans/chromatic-blue · posture: restrained, night surface у safety · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: E (картки будинків — частина фото є рендерами клієнта), підписані лише реальні лоти з каталогу, без рендерів у hero */
+/* Client design tokens from design/concept.md (veon-concept). One token system for the whole page. */
+
+/* Metric fallbacks: keep line boxes stable while the web fonts swap in (CLS 0). Values measured with fontkit against Arial / Georgia Italic. */
+@font-face {
+  font-family: "Geologica Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 103.7%;
+  ascent-override: 94%;
+  descent-override: 26.5%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Literata Fallback";
+  font-style: italic;
+  src: local("Georgia Italic"), local("Georgia-Italic"), local("Times New Roman Italic");
+  size-adjust: 100.1%;
+  ascent-override: 117.5%;
+  descent-override: 30.8%;
+  line-gap-override: 0%;
+}
+
+:root {
+  /* Палітра */
+  --paper: #F1F3EE;
+  --sand: #E4E0D4;
+  --ink: #10202E;
+  --muted: #4B5A66;
+  --desna: #145CB0;
+  --desna-deep: #0F4A8F;
+  --on-accent: #F6F9FC;
+  --brand: #2B87E3;
+  --rule: #C9CFC8;
+  --night: #0C1A28;
+  --night-raise: #132638;
+  --night-text: #E8EEF3;
+  --night-muted: #9FB1C2;
+  --night-accent: #6FB2F5;
+  --night-rule: #23384C;
+  --photo-shade: rgb(12 26 40 / 0.55);
+  --label-bg: rgb(241 243 238 / 0.94);
+
+  /* Ролі (імена базового шаблону) */
+  --color-bg: var(--paper);
+  --color-text: var(--ink);
+  --color-accent: var(--desna);
+
+  /* Шрифти */
+  --font-display: "Geologica", "Geologica Fallback", system-ui, sans-serif;
+  --font-body: "Geologica", "Geologica Fallback", system-ui, sans-serif;
+  --font-label: "Literata", "Literata Fallback", Georgia, serif;
+
+  /* Шкала тексту: 390 → 1440 */
+  --fs-h1: clamp(2.75rem, 1.2rem + 6.6vw, 6rem);
+  --fs-h2: clamp(2.125rem, 1.3rem + 2.6vw, 3.5rem);
+  --fs-h3: clamp(1.5rem, 1.35rem + 0.4vw, 1.75rem);
+  --fs-num: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
+  --fs-lead: clamp(1.125rem, 1.03rem + 0.3vw, 1.3125rem);
+  --fs-body: clamp(1rem, 0.97rem + 0.1vw, 1.0625rem);
+  --fs-small: 0.9375rem;
+  --fs-caption: 0.875rem;
+
+  /* Відступи: 4/8/12/16/24/40/64/96/144 */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.5rem;
+  --space-7: 4rem;
+  --space-8: 6rem;
+  --space-9: 9rem;
+  --section-gap: clamp(5rem, 3rem + 6vw, 10rem);
+  --gutter: clamp(20px, 5vw, 96px);
+  --space: var(--gutter);
+  --container: 1360px;
+  --header-h: 72px;
+
+  /* Форма */
+  --radius: 6px;
+  --hairline: 1px solid var(--rule);
+  --tap: 48px;
+
+  /* Рух */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --ease-inout: cubic-bezier(.6, 0, .3, 1);
+  --dur: 600ms;
+  --dur-fast: 160ms;
+  --dur-label: 420ms;
+  --dur-river: 900ms;
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --header-h: 64px;
+    --dur-label: 300ms;
+    --dur-river: 600ms;
+  }
+}
